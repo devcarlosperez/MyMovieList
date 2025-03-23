@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.awt.Component;
+
 import java.awt.*;
 
 public class Codigo_7 extends JFrame {
@@ -31,7 +31,8 @@ public class Codigo_7 extends JFrame {
     tituloHeader.add(Box.createVerticalStrut(20));
     tituloHeader.add(titulo);
 
-    // Crear un panel con FlowLayout para los botones (espacio controlado entre ellos)
+    // Crear un panel con FlowLayout para los botones (espacio controlado entre
+    // ellos)
     JPanel botonesHeader = new JPanel();
     botonesHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
     botonesHeader.add(añadirPelicula);
