@@ -1,6 +1,7 @@
 import javax.swing.*;
-
 import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Codigo_7 extends JFrame {
 
@@ -11,11 +12,13 @@ public class Codigo_7 extends JFrame {
 
   // Definimos el metodo donde están los componentes de la ventana
   public void initComponents() {
-
     // Valores iniciales de la ventana
     setSize(600, 600);
     setTitle("MyMovieList");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    // ArrayList que contiene las peliculas de la lista
+    ArrayList<Pelicula> listaPeliculas = new ArrayList<>();
 
     // Componentes del header
     JLabel titulo = new JLabel("MyMovieList");
@@ -49,6 +52,67 @@ public class Codigo_7 extends JFrame {
     // Añadir el panel completo a la ventana
     add(menuHeader);
     setVisible(true);
+
+    // Evento para añadir nuevas peliculas al inventario
+    añadirPelicula.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        mostrarVentanaAñadirPeliculas();
+      }
+    });
+  }
+
+  // Metodo para mostrar el formulario de añadir peliculas
+  public void mostrarVentanaAñadirPeliculas() {
+    // Ventana JDialog
+    JDialog formularioAñadirPeliculas = new JDialog(this, "Formulario para añadir películas", true);
+    formularioAñadirPeliculas.setSize(300, 300);
+
+    // Componentes de la ventana JDiaLog
+    JLabel tituloPelicula = new JLabel("Título de la película:");
+    JTextField textoTitulo = new JTextField(20); // Campo para el título
+    JLabel generoPelicula = new JLabel("Género de la película:");
+    JTextField textoGenero = new JTextField(20); // Campo para el género
+    JLabel calificacionPelicula = new JLabel("Calificación de la película:");
+    JTextField textoCalificacion = new JTextField(5); // Campo para la calificación
+    JButton aceptarAñadirPelicula = new JButton("Aceptar");
+    JButton cancelarAñadirPelicula = new JButton("Cancelar");
+
+    // Crear panel para las etiquetas y los campos de texto
+    JPanel formularioAñadirPelicula = new JPanel();
+    formularioAñadirPelicula.setLayout(new BoxLayout(formularioAñadirPelicula, BoxLayout.Y_AXIS));
+    formularioAñadirPelicula.add(tituloPelicula);
+    formularioAñadirPelicula.add(Box.createVerticalStrut(15)); // Espaciado entre componentes
+    formularioAñadirPelicula.add(textoTitulo);
+    formularioAñadirPelicula.add(Box.createVerticalStrut(15));
+    formularioAñadirPelicula.add(generoPelicula);
+    formularioAñadirPelicula.add(Box.createVerticalStrut(15));
+    formularioAñadirPelicula.add(textoGenero);
+    formularioAñadirPelicula.add(Box.createVerticalStrut(15));
+    formularioAñadirPelicula.add(calificacionPelicula);
+    formularioAñadirPelicula.add(Box.createVerticalStrut(15));
+    formularioAñadirPelicula.add(textoCalificacion);
+    
+    // Crear panel para los botones del formulario
+    JPanel botonesFormularioAñadirPelicula = new JPanel();
+    botonesFormularioAñadirPelicula.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
+    botonesFormularioAñadirPelicula.add(aceptarAñadirPelicula);
+    botonesFormularioAñadirPelicula.add(cancelarAñadirPelicula);
+
+    // Evento de los botones del formulario
+    cancelarAñadirPelicula.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        formularioAñadirPeliculas.dispose();
+      }
+    });
+
+    // Añadir todos los paneles a la ventana JDialog
+    formularioAñadirPeliculas.setLayout(new FlowLayout());
+    formularioAñadirPeliculas.add(formularioAñadirPelicula);
+    formularioAñadirPeliculas.add(botonesFormularioAñadirPelicula);
+    formularioAñadirPeliculas.setLocationRelativeTo(this);
+    formularioAñadirPeliculas.setVisible(true);
   }
 
   public static void main(String[] args) {
