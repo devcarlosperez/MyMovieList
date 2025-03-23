@@ -1,8 +1,6 @@
 import javax.swing.*;
-
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.*;
+import java.awt.*;
 
 public class Codigo_7 extends JFrame {
 
@@ -21,29 +19,33 @@ public class Codigo_7 extends JFrame {
 
     // Componentes del header
     JLabel titulo = new JLabel("MyMovieList");
+    titulo.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el título
     JButton añadirPelicula = new JButton("Añadir");
     JButton buscarPelicula = new JButton("Buscar");
     JButton guardarPeliculas = new JButton("Guardar");
 
-    // Panel que compone el titulo del header
+    // Crear panel para el título (centrado)
     JPanel tituloHeader = new JPanel();
     tituloHeader.setLayout(new BoxLayout(tituloHeader, BoxLayout.Y_AXIS));
     titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+    tituloHeader.add(Box.createVerticalStrut(20));
     tituloHeader.add(titulo);
 
-    // Panel que compone los botones del header
+    // Crear un panel con FlowLayout para los botones (espacio controlado entre ellos)
     JPanel botonesHeader = new JPanel();
-    botonesHeader.setLayout(new BoxLayout(botonesHeader, BoxLayout.X_AXIS));
+    botonesHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
     botonesHeader.add(añadirPelicula);
     botonesHeader.add(buscarPelicula);
     botonesHeader.add(guardarPeliculas);
 
-    //Panel que contiene los dos paneles del header
+    // Crear el panel principal que contiene título y botones
     JPanel menuHeader = new JPanel();
     menuHeader.setLayout(new BoxLayout(menuHeader, BoxLayout.Y_AXIS));
     menuHeader.add(tituloHeader);
+    menuHeader.add(Box.createVerticalStrut(20)); // Espacio entre el título y los botones
     menuHeader.add(botonesHeader);
 
+    // Añadir el panel completo a la ventana
     add(menuHeader);
     setVisible(true);
   }
