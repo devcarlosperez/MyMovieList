@@ -5,6 +5,12 @@ import java.util.ArrayList;
 
 public class Codigo_7 extends JFrame {
 
+  // ArrayList que contiene las peliculas de la lista
+  ArrayList<Pelicula> listaPeliculas = new ArrayList<>();
+
+  // Panel donde se van a almacenar las peliculas del inventario
+  JPanel peliculasInventario = new JPanel();
+
   // Definimos el constructor de la clase
   public Codigo_7() {
     initComponents();
@@ -16,9 +22,6 @@ public class Codigo_7 extends JFrame {
     setSize(600, 600);
     setTitle("MyMovieList");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    // ArrayList que contiene las peliculas de la lista
-    ArrayList<Pelicula> listaPeliculas = new ArrayList<>();
 
     // Componentes del header
     JLabel titulo = new JLabel("MyMovieList");
@@ -49,15 +52,22 @@ public class Codigo_7 extends JFrame {
     menuHeader.add(Box.createVerticalStrut(20)); // Espacio entre el título y los botones
     menuHeader.add(botonesHeader);
 
+    // Usamos BorderLayout para organizar los componentes
+    setLayout(new BorderLayout());
+
     // Añadir el panel completo a la ventana
-    add(menuHeader);
+    add(menuHeader, BorderLayout.NORTH);
     setVisible(true);
+
+    // Añadimos el panel peliculasInventario a la ventana principal
+    peliculasInventario.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15));
+    add(peliculasInventario, BorderLayout.CENTER);
 
     // Evento para añadir nuevas peliculas al inventario
     añadirPelicula.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        mostrarVentanaAñadirPeliculas();
+        mostrarVentanaAñadirPeliculas(); // Llamamos al metodo para mostrar la ventana JDialog
       }
     });
   }
@@ -92,6 +102,7 @@ public class Codigo_7 extends JFrame {
     formularioAñadirPelicula.add(calificacionPelicula);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
     formularioAñadirPelicula.add(textoCalificacion);
+    formularioAñadirPelicula.add(Box.createVerticalStrut(15));
     
     // Crear panel para los botones del formulario
     JPanel botonesFormularioAñadirPelicula = new JPanel();
@@ -100,10 +111,23 @@ public class Codigo_7 extends JFrame {
     botonesFormularioAñadirPelicula.add(cancelarAñadirPelicula);
 
     // Evento de los botones del formulario
+    aceptarAñadirPelicula.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Integer textoCalificacionNumero = Integer.valueOf(textoCalificacion.getText());
+        Pelicula nuevaPelicula = new Pelicula(textoTitulo.getText(), textoGenero.getText(), textoCalificacionNumero); // Almacenamos la nueva película en un objeto
+
+        // Añadimos la pelicula al ArrayList y actualizamos las peliculas del inventario
+        listaPeliculas.add(nuevaPelicula);
+        actualizarPeliculasInventario();
+        formularioAñadirPeliculas.dispose(); // Salimos de la ventana JDialog
+      }
+    });
+
     cancelarAñadirPelicula.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        formularioAñadirPeliculas.dispose();
+        formularioAñadirPeliculas.dispose(); // Salimos de la ventana JDialog
       }
     });
 
@@ -115,7 +139,33 @@ public class Codigo_7 extends JFrame {
     formularioAñadirPeliculas.setVisible(true);
   }
 
-  public static void main(String[] args) {
+  // Metodo para actualizar las películas del inventario
+  public void actualizarPeliculasInventario() {
+    peliculasInventario.removeAll(); // Eliminamos todo lo que estaba en el panel
+    for (Pelicula i: listaPeliculas) {
+      // Creamos el panel de cada película
+      JPanel pelicula = new JPanel();
+
+      // Cogemos los valores de las peliculas y los almacenamos en etiquetas
+      JLabel tituloPelicula = new JLabel(i.getTitulo());
+      JLabel generoPelicula = new JLabel(i.getGenero());
+      String textoCalificacionPelicula = String.valueOf(i.getCalificacion());
+      JLabel calificacionPelicula = new JLabel(textoCalificacionPelicula);
+      pelicula.setLayout(new BoxLayout(pelicula, BoxLayout.Y_AXIS));
+
+      // Añadimos los valores al panel pelicula
+      pelicula.add(tituloPelicula);
+      pelicula.add(generoPelicula);
+      pelicula.add(calificacionPelicula);
+
+      // Añadimos la pelicula al inventario peliculas
+      peliculasInventario.add(pelicula);
+    }
+    peliculasInventario.revalidate(); // Revalidar para actualizar la vista
+    peliculasInventario.repaint();    // Redibujar el panel con los nuevos componente
+  }
+
+  public static void main(String[] args) { // Método Main
     new Codigo_7();
   }
 }
