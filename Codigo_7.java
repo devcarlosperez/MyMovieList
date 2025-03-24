@@ -162,7 +162,7 @@ public class Codigo_7 extends JFrame {
       peliculasInventario.add(pelicula);
     }
     peliculasInventario.revalidate(); // Revalidar para actualizar la vista
-    peliculasInventario.repaint();    // Redibujar el panel con los nuevos componente
+    peliculasInventario.repaint(); // Redibujar el panel con los nuevos componente
   }
 
   public static void main(String[] args) { // Método Main
