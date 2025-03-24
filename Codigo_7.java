@@ -30,8 +30,6 @@ public class Codigo_7 extends JFrame {
     JButton buscarPelicula = new JButton("Buscar");
     JTextField textoBuscarPelicula = new JTextField(10);
     JButton guardarPeliculas = new JButton("Guardar");
-    JButton editarPeliculas = new JButton("Editar");
-    JButton borrarPeliculas = new JButton("Borrar");
 
     // Creamos el boton volver para reiniciar el inventario
     JButton volverAtras = new JButton("Volver");
@@ -53,8 +51,6 @@ public class Codigo_7 extends JFrame {
     JPanel botonesHeader = new JPanel();
     botonesHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
     botonesHeader.add(añadirPelicula);
-    botonesHeader.add(editarPeliculas);
-    botonesHeader.add(borrarPeliculas);
     botonesHeader.add(guardarPeliculas);
     botonesHeader.add(buscarPelicula);
     botonesHeader.add(textoBuscarPelicula);
@@ -123,6 +119,9 @@ public class Codigo_7 extends JFrame {
         });
       }
     });
+    
+    // Evento para editar peliculas
+
   }
 
   // Metodo para mostrar el formulario de añadir peliculas
@@ -198,21 +197,45 @@ public class Codigo_7 extends JFrame {
     for (Pelicula i: peliculas) {
       // Creamos el panel de cada película
       JPanel pelicula = new JPanel();
+      pelicula.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
 
       // Cogemos los valores de las peliculas y los almacenamos en etiquetas
       JLabel tituloPelicula = new JLabel(i.getTitulo());
       JLabel generoPelicula = new JLabel(i.getGenero());
       String textoCalificacionPelicula = String.valueOf(i.getCalificacion());
       JLabel calificacionPelicula = new JLabel(textoCalificacionPelicula);
-      pelicula.setLayout(new BoxLayout(pelicula, BoxLayout.Y_AXIS));
 
-      // Añadimos los valores al panel pelicula
-      pelicula.add(tituloPelicula);
-      pelicula.add(generoPelicula);
-      pelicula.add(calificacionPelicula);
+      // Creamos panel de los campos de la pelicula
+      JPanel valoresPelicula = new JPanel();
+      valoresPelicula.setLayout(new BoxLayout(valoresPelicula, BoxLayout.Y_AXIS));
+      valoresPelicula.add(tituloPelicula);
+      valoresPelicula.add(generoPelicula);
+      valoresPelicula.add(calificacionPelicula);
+
+      // Creamos los botones editar y borrar (PARA CADA PELICULA)
+      JButton editarPelicula = new JButton("Editar");
+      JButton borrarPelicula = new JButton("Borrar");
+      JPanel botonesPelicula = new JPanel();
+      botonesPelicula.setLayout(new BoxLayout(botonesPelicula, BoxLayout.Y_AXIS));
+      botonesPelicula.add(editarPelicula);
+      botonesPelicula.add(Box.createVerticalStrut(7));
+      botonesPelicula.add(borrarPelicula);
+
+      // Añadimos el panel botonesPelicula a la pelicula
+      pelicula.add(valoresPelicula);
+      pelicula.add(botonesPelicula);
 
       // Añadimos la pelicula al inventario peliculas
       peliculasInventario.add(pelicula);
+
+      // Evento para borrar peliculas
+      borrarPelicula.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          peliculas.remove(i); // Borramos la pelicula del array
+          actualizarPeliculasInventario(peliculas); // Actualizamos el inventario
+        }
+      });
     }
     peliculasInventario.revalidate(); // Revalidar para actualizar la vista
     peliculasInventario.repaint(); // Redibujar el panel con los nuevos componente
