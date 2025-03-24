@@ -236,6 +236,9 @@ public class Codigo_7 extends JFrame {
           actualizarPeliculasInventario(peliculas); // Actualizamos el inventario
         }
       });
+
+      // Evento para editar peliculas
+      
     }
     peliculasInventario.revalidate(); // Revalidar para actualizar la vista
     peliculasInventario.repaint(); // Redibujar el panel con los nuevos componente
