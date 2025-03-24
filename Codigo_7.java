@@ -28,7 +28,18 @@ public class Codigo_7 extends JFrame {
     titulo.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el título
     JButton añadirPelicula = new JButton("Añadir");
     JButton buscarPelicula = new JButton("Buscar");
+    JTextField textoBuscarPelicula = new JTextField(10);
     JButton guardarPeliculas = new JButton("Guardar");
+    JButton editarPeliculas = new JButton("Editar");
+    JButton borrarPeliculas = new JButton("Borrar");
+
+    // Creamos el boton volver para reiniciar el inventario
+    JButton volverAtras = new JButton("Volver");
+    // El boton al principio será invisible
+    volverAtras.setVisible(false);
+    JPanel panelBotonVolverAtras = new JPanel();
+    panelBotonVolverAtras.add(volverAtras);
+
 
     // Crear panel para el título (centrado)
     JPanel tituloHeader = new JPanel();
@@ -42,8 +53,11 @@ public class Codigo_7 extends JFrame {
     JPanel botonesHeader = new JPanel();
     botonesHeader.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
     botonesHeader.add(añadirPelicula);
-    botonesHeader.add(buscarPelicula);
+    botonesHeader.add(editarPeliculas);
+    botonesHeader.add(borrarPeliculas);
     botonesHeader.add(guardarPeliculas);
+    botonesHeader.add(buscarPelicula);
+    botonesHeader.add(textoBuscarPelicula);
 
     // Crear el panel principal que contiene título y botones
     JPanel menuHeader = new JPanel();
@@ -51,6 +65,8 @@ public class Codigo_7 extends JFrame {
     menuHeader.add(tituloHeader);
     menuHeader.add(Box.createVerticalStrut(20)); // Espacio entre el título y los botones
     menuHeader.add(botonesHeader);
+    menuHeader.add(Box.createVerticalStrut(20));
+    menuHeader.add(panelBotonVolverAtras);
 
     // Usamos BorderLayout para organizar los componentes
     setLayout(new BorderLayout());
@@ -68,6 +84,43 @@ public class Codigo_7 extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         mostrarVentanaAñadirPeliculas(); // Llamamos al metodo para mostrar la ventana JDialog
+      }
+    });
+
+    // Evento para buscar películas por su nombre
+    buscarPelicula.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        peliculasInventario.removeAll();
+        ArrayList<Pelicula> peliculasEncontradas = new ArrayList<>();
+        for (Pelicula i: listaPeliculas) {
+          // Buscamos si el título coincide con el introducido por el usuario
+          if (textoBuscarPelicula.getText().equals(i.getTitulo())) { 
+            peliculasEncontradas.add(i);
+          }
+        }
+        // Comprobamos si los resultados de búsqueda están vacíos
+        if (peliculasEncontradas.isEmpty()) {
+          JLabel mensajeNoHayPeliculasEncontradas = new JLabel("No hay películas que concuerden con la búsqueda");
+          // Si no se encontraron se muestra un mensaje
+          peliculasInventario.add(mensajeNoHayPeliculasEncontradas, BorderLayout.CENTER);
+          mensajeNoHayPeliculasEncontradas.setVisible(true);
+        } else { // Si se encontraron películas se actualiza el inventario
+          actualizarPeliculasInventario(peliculasEncontradas);
+        }
+        peliculasInventario.revalidate(); // Revalidar para actualizar la vista
+        peliculasInventario.repaint(); // Redibujar el panel con los nuevos componente
+
+        // Cambiamos la visibilidad del botón para que se vea
+        volverAtras.setVisible(true);
+        // Si haces click en volver resetea el inventario completo
+        volverAtras.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            actualizarPeliculasInventario(listaPeliculas);
+            volverAtras.setVisible(false);
+          }
+        });
       }
     });
   }
@@ -119,7 +172,7 @@ public class Codigo_7 extends JFrame {
 
         // Añadimos la pelicula al ArrayList y actualizamos las peliculas del inventario
         listaPeliculas.add(nuevaPelicula);
-        actualizarPeliculasInventario();
+        actualizarPeliculasInventario(listaPeliculas);
         formularioAñadirPeliculas.dispose(); // Salimos de la ventana JDialog
       }
     });
@@ -140,9 +193,9 @@ public class Codigo_7 extends JFrame {
   }
 
   // Metodo para actualizar las películas del inventario
-  public void actualizarPeliculasInventario() {
-    peliculasInventario.removeAll(); // Eliminamos todo lo que estaba en el panel
-    for (Pelicula i: listaPeliculas) {
+  public void actualizarPeliculasInventario(ArrayList<Pelicula> peliculas) {
+    peliculasInventario.removeAll();
+    for (Pelicula i: peliculas) {
       // Creamos el panel de cada película
       JPanel pelicula = new JPanel();
 
