@@ -1,12 +1,38 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Codigo_7 extends JFrame {
 
   // ArrayList que contiene las peliculas de la lista
   ArrayList<Pelicula> listaPeliculas = new ArrayList<>();
+
+  // Archivo csv que va a contener las peliculas guardadas
+  File archivoPeliculas = new File("peliculas.csv");
+
+  public void cargarPeliculas() {
+    try {
+      BufferedReader archivoPeliculasLeer = new BufferedReader(new FileReader(archivoPeliculas));
+      // Recorremos el archivo linea por linea
+      String linea;
+      while ((linea = archivoPeliculasLeer.readLine()) != null) {
+        String[] datos = linea.split(",");
+        String titulo = datos[0];
+        String genero = datos[1];
+        Integer calificacion = Integer.valueOf(datos[2]);
+        // Almacenamos los valores del array en un nuevo objeto
+        Pelicula pelicula = new Pelicula(titulo, genero, calificacion);
+        listaPeliculas.add(pelicula); // Añadimos el objeto a la lista
+      }
+      actualizarPeliculasInventario(listaPeliculas); // Llamamos al metodo para mostrar el inventario
+      archivoPeliculasLeer.close();
+    } catch (IOException error) {
+      System.out.println("Error: "+error.getMessage());
+    }
+  }
+
 
   // Panel donde se van a almacenar las peliculas del inventario
   JPanel peliculasInventario = new JPanel();
@@ -22,6 +48,9 @@ public class Codigo_7 extends JFrame {
     setSize(600, 600);
     setTitle("MyMovieList");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    //Llamamos al metodo cargarPeliculas
+    cargarPeliculas();
 
     // Componentes del header
     JLabel titulo = new JLabel("MyMovieList");
@@ -116,6 +145,24 @@ public class Codigo_7 extends JFrame {
             volverAtras.setVisible(false);
           }
         });
+      }
+    });
+
+    // Evento para guardar las peliculas
+    guardarPeliculas.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          BufferedWriter archivoPeliculasEscribir = new BufferedWriter(new FileWriter(archivoPeliculas));
+          for (Pelicula i: listaPeliculas) { // Recorremos la lista de peliculas
+            // Escribir los valores de cada pelicula en el archivo
+            archivoPeliculasEscribir.write(i.getTitulo()+","+i.getGenero()+","+i.getCalificacion());
+            archivoPeliculasEscribir.newLine();
+          }
+          archivoPeliculasEscribir.close();
+        } catch (IOException error) {
+          System.out.println("Error: "+error.getMessage());
+        }
       }
     });
   }
