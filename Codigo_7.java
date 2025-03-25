@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Codigo_7 extends JFrame {
 
@@ -261,7 +261,7 @@ public class Codigo_7 extends JFrame {
   public void mostrarVentanaAñadirPeliculas() {
     // Ventana JDialog
     JDialog formularioAñadirPeliculas = new JDialog(this, "Formulario para añadir películas", true);
-    formularioAñadirPeliculas.setSize(300, 350);
+    formularioAñadirPeliculas.setSize(320, 350);
 
     // Componentes de la ventana JDiaLog
     JLabel tituloPelicula = new JLabel("Título de la película:");
@@ -276,6 +276,8 @@ public class Codigo_7 extends JFrame {
     JTextField textoCalificacion = new JTextField(5); // Campo para la calificación
     JLabel campoObligatorioCalificacion = new JLabel("Campo Obligatorio *");
     campoObligatorioCalificacion.setVisible(false);
+    JLabel errorCalificacionNumero = new JLabel("La calificación debe ser un número");
+    errorCalificacionNumero.setVisible(false);
     JButton aceptarAñadirPelicula = new JButton("Aceptar");
     JButton cancelarAñadirPelicula = new JButton("Cancelar");
 
@@ -296,6 +298,7 @@ public class Codigo_7 extends JFrame {
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
     formularioAñadirPelicula.add(textoCalificacion);
     formularioAñadirPelicula.add(campoObligatorioCalificacion);
+    formularioAñadirPelicula.add(errorCalificacionNumero);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
 
     // Crear panel para los botones del formulario
@@ -310,6 +313,9 @@ public class Codigo_7 extends JFrame {
       public void actionPerformed(ActionEvent e) {
         // Variable para ver si los campos no estan vacios
         boolean camposVacios = false;
+
+        // Variable para comprobar que la calificacion es un numero
+        boolean calificacionEsNumero = false;
 
         // Comprobamos si los campos no estan vacios
         if (textoTitulo.getText().trim().isEmpty()) {
@@ -333,9 +339,22 @@ public class Codigo_7 extends JFrame {
           campoObligatorioCalificacion.setVisible(false);
         }
 
+        // Declaramos la variable para pasar la calificacion a texto
+        Integer textoCalificacionNumero = null;
+
+
+        // Comprobamos la validacion
+        if (!textoCalificacion.getText().trim().isEmpty()) {
+          try {
+            textoCalificacionNumero = Integer.valueOf(textoCalificacion.getText());
+            calificacionEsNumero = true;
+          } catch (NumberFormatException ex) {
+            errorCalificacionNumero.setVisible(true);
+          }
+        }
+
         // Si no hay campos vacios se ejecuta el añadir pelicula
-        if (camposVacios == false) {
-          Integer textoCalificacionNumero = Integer.valueOf(textoCalificacion.getText());
+        if (camposVacios == false && calificacionEsNumero == true) {
           Pelicula nuevaPelicula = new Pelicula(textoTitulo.getText(), textoGenero.getText(), textoCalificacionNumero);
           // Añadimos la pelicula al ArrayList y actualizamos las peliculas del inventario
           listaPeliculas.add(nuevaPelicula);
@@ -421,7 +440,7 @@ public class Codigo_7 extends JFrame {
   public void mostrarVentanaEditarPeliculaa(Pelicula pelicula) {
     // Ventana JDialog
     JDialog formularioEditarPeliculas = new JDialog(this, "Formulario para editar películas", true);
-    formularioEditarPeliculas.setSize(300, 350);
+    formularioEditarPeliculas.setSize(320, 350);
 
     // Componentes de la ventana JDiaLog
     JLabel tituloPelicula = new JLabel("Título de la película:");
@@ -438,6 +457,8 @@ public class Codigo_7 extends JFrame {
     JTextField textoCalificacion = new JTextField(5); // Campo para la calificación
     JLabel campoObligatorioCalificacion = new JLabel("Campo Obligatorio *");
     campoObligatorioCalificacion.setVisible(false);
+    JLabel errorCalificacionNumero = new JLabel("La calificación debe ser un número");
+    errorCalificacionNumero.setVisible(false);
     String calificacionString = String.valueOf(pelicula.getCalificacion());
     textoCalificacion.setText(calificacionString);
     JButton aceptarEditarPelicula = new JButton("Aceptar");
@@ -460,6 +481,7 @@ public class Codigo_7 extends JFrame {
     formularioEditarPelicula.add(Box.createVerticalStrut(15));
     formularioEditarPelicula.add(textoCalificacion);
     formularioEditarPelicula.add(campoObligatorioCalificacion);
+    formularioEditarPelicula.add(errorCalificacionNumero);
     formularioEditarPelicula.add(Box.createVerticalStrut(15));
 
     // Crear panel para los botones del formulario
@@ -474,6 +496,9 @@ public class Codigo_7 extends JFrame {
       public void actionPerformed(ActionEvent e) {
         // Variable para ver si los campos estan rellenados
         boolean camposVacios = false;
+
+        // Variable para comprobar que la calificacion es un numero
+        boolean calificacionEsNumero = false;
 
         // Comprobamos si los campos no estan vacios
         if (textoTitulo.getText().trim().isEmpty()) {
@@ -497,20 +522,31 @@ public class Codigo_7 extends JFrame {
           campoObligatorioCalificacion.setVisible(false);
         }
 
+        // Declaramos la variable para pasar la calificacion a texto
+        Integer nuevaCalificacionPelicula = null;
+
+        // Comprobamos la validacion
+        if (!textoCalificacion.getText().trim().isEmpty()) {
+          try {
+            nuevaCalificacionPelicula = Integer.valueOf(textoCalificacion.getText());
+            calificacionEsNumero = true;
+          } catch (NumberFormatException ex) {
+            errorCalificacionNumero.setVisible(true);
+          }
+        }
+
         // Si no hay campos vacios se ejecuta el añadir pelicula
-        if (camposVacios == false) {
+        if (camposVacios == false && calificacionEsNumero == true) {
           // Obtenemos los nuevos valores de los campos de texto
           String nuevoTituloPelicula = textoTitulo.getText();
           String nuevoGeneroPelicula = textoGenero.getText();
-          String nuevoCalificacionPelicula = textoCalificacion.getText();
-          Integer nuevaCalificacionPeliculaNumero = Integer.valueOf(nuevoCalificacionPelicula);
 
           // Buscamos en la lista el mismo titulo y cambiamos los valores
           for (Pelicula i : listaPeliculas) {
             if (i.getTitulo().equals(pelicula.getTitulo())) {
               i.setTitulo(nuevoTituloPelicula);
               i.setGenero(nuevoGeneroPelicula);
-              i.setCalificacion(nuevaCalificacionPeliculaNumero);
+              i.setCalificacion(nuevaCalificacionPelicula);
             }
           }
           actualizarPeliculasInventario(listaPeliculas);
