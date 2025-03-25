@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -12,6 +14,7 @@ public class Codigo_7 extends JFrame {
   // Archivo csv que va a contener las peliculas guardadas
   File archivoPeliculas = new File("peliculas.csv");
 
+  // Metodo para cargar las peliculas del archivo en el ArrayList
   public void cargarPeliculas() {
     try {
       BufferedReader archivoPeliculasLeer = new BufferedReader(new FileReader(archivoPeliculas));
@@ -29,10 +32,99 @@ public class Codigo_7 extends JFrame {
       actualizarPeliculasInventario(listaPeliculas); // Llamamos al metodo para mostrar el inventario
       archivoPeliculasLeer.close();
     } catch (IOException error) {
-      System.out.println("Error: "+error.getMessage());
+      System.out.println("Error: " + error.getMessage());
     }
   }
 
+  // Metodo para mostrar ventana de confirmación guardar peliculas
+  public void mostrarVentanaGuardarPeliculas() {
+    // Ventana de confirmacion peliculas guardadas
+    JDialog confirmacionPeliculasGuardadas = new JDialog(this, "Confirmación peliculas guardadas", true);
+    confirmacionPeliculasGuardadas.setSize(300, 150);
+    // Etiqueta confirmacion
+    JLabel mensajeConfirmacionPeliculasGuardadas = new JLabel("Las peliculas se han guardado exitosamente");
+    // Boton aceptar
+    JButton aceptarConfirmacionPeliculasGuardadas = new JButton("Aceptar");
+
+    // Evento para cerrar la ventana
+    aceptarConfirmacionPeliculasGuardadas.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        confirmacionPeliculasGuardadas.dispose();
+      }
+    });
+    // Creamos los paneles para los contenidos de la ventana
+    mensajeConfirmacionPeliculasGuardadas.setAlignmentX(CENTER_ALIGNMENT);
+    JPanel panelMensajeConfirmacion = new JPanel();
+    panelMensajeConfirmacion.setLayout(new BoxLayout(panelMensajeConfirmacion, BoxLayout.Y_AXIS));
+    panelMensajeConfirmacion.add(Box.createVerticalStrut(10));
+    panelMensajeConfirmacion.add(mensajeConfirmacionPeliculasGuardadas);
+
+    JPanel panelBotonConfirmacion = new JPanel();
+    panelBotonConfirmacion.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
+    panelBotonConfirmacion.add(aceptarConfirmacionPeliculasGuardadas);
+
+    JPanel ventanaConfirmacion = new JPanel();
+    ventanaConfirmacion.setLayout(new BoxLayout(ventanaConfirmacion, BoxLayout.Y_AXIS));
+    ventanaConfirmacion.add(panelMensajeConfirmacion);
+    ventanaConfirmacion.add(Box.createVerticalStrut(20));
+    ventanaConfirmacion.add(panelBotonConfirmacion);
+
+    // Añadimos todo a la ventana JDialog
+    confirmacionPeliculasGuardadas.add(ventanaConfirmacion);
+    confirmacionPeliculasGuardadas.setLocationRelativeTo(this);
+    confirmacionPeliculasGuardadas.setVisible(true);
+  }
+
+  // Metodo para mostrar ventana de confirmacion borrar peliculas
+  public void mostrarVentanaBorrarPeliculas(Pelicula pelicula) {
+    // Ventana de confirmacion peliculas borradas
+    JDialog confirmacionPeliculasBorradas = new JDialog(this, "Confirmación peliculas borradas", true);
+    confirmacionPeliculasBorradas.setSize(350, 150);
+    // Etiqueta confirmacion
+    JLabel mensajeConfirmacionPeliculasBorradas = new JLabel("¿Estas seguro/a que quieres eliminar esta pelicula?");
+    // Boton aceptar
+    JButton aceptarConfirmacionPeliculasBorradas = new JButton("Aceptar");
+    JButton cancelarConfirmacionPeliculasBorradas = new JButton("Cancelar");
+
+    // Eventos para aceptar o cancelar la eliminacion de la pelicula
+    aceptarConfirmacionPeliculasBorradas.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        listaPeliculas.remove(pelicula); // Borramos la pelicula del array
+        actualizarPeliculasInventario(listaPeliculas); // Actualizamos el inventario
+        confirmacionPeliculasBorradas.dispose();
+      }
+    });
+    cancelarConfirmacionPeliculasBorradas.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        confirmacionPeliculasBorradas.dispose();
+      }
+    });
+    // Creamos los paneles para los contenidos de la ventana
+    mensajeConfirmacionPeliculasBorradas.setAlignmentX(CENTER_ALIGNMENT);
+    JPanel panelMensajeConfirmacion = new JPanel();
+    panelMensajeConfirmacion.setLayout(new BoxLayout(panelMensajeConfirmacion, BoxLayout.Y_AXIS));
+    panelMensajeConfirmacion.add(Box.createVerticalStrut(10));
+    panelMensajeConfirmacion.add(mensajeConfirmacionPeliculasBorradas);
+
+    JPanel panelBotonesConfirmacion = new JPanel();
+    panelBotonesConfirmacion.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
+    panelBotonesConfirmacion.add(aceptarConfirmacionPeliculasBorradas);
+    panelBotonesConfirmacion.add(cancelarConfirmacionPeliculasBorradas);
+
+    JPanel ventanaConfirmacion = new JPanel();
+    ventanaConfirmacion.setLayout(new BoxLayout(ventanaConfirmacion, BoxLayout.Y_AXIS));
+    ventanaConfirmacion.add(panelMensajeConfirmacion);
+    ventanaConfirmacion.add(Box.createVerticalStrut(20));
+    ventanaConfirmacion.add(panelBotonesConfirmacion);
+
+    // Añadimos todo a la ventana JDialog
+    confirmacionPeliculasBorradas.add(ventanaConfirmacion);
+    confirmacionPeliculasBorradas.setLocationRelativeTo(this);
+    confirmacionPeliculasBorradas.setVisible(true);
+  }
 
   // Panel donde se van a almacenar las peliculas del inventario
   JPanel peliculasInventario = new JPanel();
@@ -49,7 +141,7 @@ public class Codigo_7 extends JFrame {
     setTitle("MyMovieList");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    //Llamamos al metodo cargarPeliculas
+    // Llamamos al metodo cargarPeliculas
     cargarPeliculas();
 
     // Componentes del header
@@ -70,7 +162,6 @@ public class Codigo_7 extends JFrame {
     // Crear panel para el título (centrado)
     JPanel tituloHeader = new JPanel();
     tituloHeader.setLayout(new BoxLayout(tituloHeader, BoxLayout.Y_AXIS));
-    titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
     tituloHeader.add(Box.createVerticalStrut(20));
     tituloHeader.add(titulo);
 
@@ -117,9 +208,9 @@ public class Codigo_7 extends JFrame {
       public void actionPerformed(ActionEvent e) {
         peliculasInventario.removeAll();
         ArrayList<Pelicula> peliculasEncontradas = new ArrayList<>();
-        for (Pelicula i: listaPeliculas) {
+        for (Pelicula i : listaPeliculas) {
           // Buscamos si el título coincide con el introducido por el usuario
-          if (textoBuscarPelicula.getText().equals(i.getTitulo())) { 
+          if (textoBuscarPelicula.getText().equals(i.getTitulo())) {
             peliculasEncontradas.add(i);
           }
         }
@@ -154,14 +245,15 @@ public class Codigo_7 extends JFrame {
       public void actionPerformed(ActionEvent e) {
         try {
           BufferedWriter archivoPeliculasEscribir = new BufferedWriter(new FileWriter(archivoPeliculas));
-          for (Pelicula i: listaPeliculas) { // Recorremos la lista de peliculas
+          for (Pelicula i : listaPeliculas) { // Recorremos la lista de peliculas
             // Escribir los valores de cada pelicula en el archivo
-            archivoPeliculasEscribir.write(i.getTitulo()+","+i.getGenero()+","+i.getCalificacion());
+            archivoPeliculasEscribir.write(i.getTitulo() + "," + i.getGenero() + "," + i.getCalificacion());
             archivoPeliculasEscribir.newLine();
           }
           archivoPeliculasEscribir.close();
+          mostrarVentanaGuardarPeliculas();
         } catch (IOException error) {
-          System.out.println("Error: "+error.getMessage());
+          System.out.println("Error: " + error.getMessage());
         }
       }
     });
@@ -171,15 +263,21 @@ public class Codigo_7 extends JFrame {
   public void mostrarVentanaAñadirPeliculas() {
     // Ventana JDialog
     JDialog formularioAñadirPeliculas = new JDialog(this, "Formulario para añadir películas", true);
-    formularioAñadirPeliculas.setSize(300, 300);
+    formularioAñadirPeliculas.setSize(300, 350);
 
     // Componentes de la ventana JDiaLog
     JLabel tituloPelicula = new JLabel("Título de la película:");
     JTextField textoTitulo = new JTextField(20); // Campo para el título
+    JLabel campoObligatorioTitulo = new JLabel("Campo Obligatorio *");
+    campoObligatorioTitulo.setVisible(false);
     JLabel generoPelicula = new JLabel("Género de la película:");
     JTextField textoGenero = new JTextField(20); // Campo para el género
+    JLabel campoObligatorioGenero = new JLabel("Campo Obligatorio *");
+    campoObligatorioGenero.setVisible(false);
     JLabel calificacionPelicula = new JLabel("Calificación de la película:");
     JTextField textoCalificacion = new JTextField(5); // Campo para la calificación
+    JLabel campoObligatorioCalificacion = new JLabel("Campo Obligatorio *");
+    campoObligatorioCalificacion.setVisible(false);
     JButton aceptarAñadirPelicula = new JButton("Aceptar");
     JButton cancelarAñadirPelicula = new JButton("Cancelar");
 
@@ -189,16 +287,19 @@ public class Codigo_7 extends JFrame {
     formularioAñadirPelicula.add(tituloPelicula);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15)); // Espaciado entre componentes
     formularioAñadirPelicula.add(textoTitulo);
+    formularioAñadirPelicula.add(campoObligatorioTitulo);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
     formularioAñadirPelicula.add(generoPelicula);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
     formularioAñadirPelicula.add(textoGenero);
+    formularioAñadirPelicula.add(campoObligatorioGenero);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
     formularioAñadirPelicula.add(calificacionPelicula);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
     formularioAñadirPelicula.add(textoCalificacion);
+    formularioAñadirPelicula.add(campoObligatorioCalificacion);
     formularioAñadirPelicula.add(Box.createVerticalStrut(15));
-    
+
     // Crear panel para los botones del formulario
     JPanel botonesFormularioAñadirPelicula = new JPanel();
     botonesFormularioAñadirPelicula.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -209,13 +310,40 @@ public class Codigo_7 extends JFrame {
     aceptarAñadirPelicula.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Integer textoCalificacionNumero = Integer.valueOf(textoCalificacion.getText());
-        Pelicula nuevaPelicula = new Pelicula(textoTitulo.getText(), textoGenero.getText(), textoCalificacionNumero); // Almacenamos la nueva película en un objeto
+        // Variable para ver si los campos no estan vacios
+        boolean camposVacios = false;
 
-        // Añadimos la pelicula al ArrayList y actualizamos las peliculas del inventario
-        listaPeliculas.add(nuevaPelicula);
-        actualizarPeliculasInventario(listaPeliculas);
-        formularioAñadirPeliculas.dispose(); // Salimos de la ventana JDialog
+        // Comprobamos si los campos no estan vacios
+        if (textoTitulo.getText().trim().isEmpty()) {
+          campoObligatorioTitulo.setVisible(true);
+          camposVacios = true;
+        } else {
+          campoObligatorioTitulo.setVisible(false);
+        }
+
+        if (textoGenero.getText().trim().isEmpty()) {
+          campoObligatorioGenero.setVisible(true);
+          camposVacios = true;
+        } else {
+          campoObligatorioGenero.setVisible(false);
+        }
+
+        if (textoCalificacion.getText().trim().isEmpty()) {
+          campoObligatorioCalificacion.setVisible(true);
+          camposVacios = true;
+        } else {
+          campoObligatorioCalificacion.setVisible(false);
+        }
+
+        // Si no hay campos vacios se ejecuta el añadir pelicula
+        if (camposVacios == false) {
+          Integer textoCalificacionNumero = Integer.valueOf(textoCalificacion.getText());
+          Pelicula nuevaPelicula = new Pelicula(textoTitulo.getText(), textoGenero.getText(), textoCalificacionNumero);
+          // Añadimos la pelicula al ArrayList y actualizamos las peliculas del inventario
+          listaPeliculas.add(nuevaPelicula);
+          actualizarPeliculasInventario(listaPeliculas);
+          formularioAñadirPeliculas.dispose(); // Salimos de la ventana JDialog
+        }
       }
     });
 
@@ -237,7 +365,7 @@ public class Codigo_7 extends JFrame {
   // Metodo para actualizar las películas del inventario
   public void actualizarPeliculasInventario(ArrayList<Pelicula> peliculas) {
     peliculasInventario.removeAll();
-    for (Pelicula i: peliculas) {
+    for (Pelicula i : peliculas) {
       // Creamos el panel de cada película
       JPanel pelicula = new JPanel();
       pelicula.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -275,8 +403,7 @@ public class Codigo_7 extends JFrame {
       borrarPelicula.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          peliculas.remove(i); // Borramos la pelicula del array
-          actualizarPeliculasInventario(peliculas); // Actualizamos el inventario
+          mostrarVentanaBorrarPeliculas(i);
         }
       });
 
@@ -296,17 +423,23 @@ public class Codigo_7 extends JFrame {
   public void mostrarVentanaEditarPeliculaa(Pelicula pelicula) {
     // Ventana JDialog
     JDialog formularioEditarPeliculas = new JDialog(this, "Formulario para editar películas", true);
-    formularioEditarPeliculas.setSize(300, 300);
+    formularioEditarPeliculas.setSize(300, 350);
 
     // Componentes de la ventana JDiaLog
     JLabel tituloPelicula = new JLabel("Título de la película:");
     JTextField textoTitulo = new JTextField(20); // Campo para el título
+    JLabel campoObligatorioTitulo = new JLabel("Campo Obligatorio *");
+    campoObligatorioTitulo.setVisible(false);
     textoTitulo.setText(pelicula.getTitulo()); // Titulo de la pelicula anterior
     JLabel generoPelicula = new JLabel("Género de la película:");
     JTextField textoGenero = new JTextField(20); // Campo para el género
+    JLabel campoObligatorioGenero = new JLabel("Campo Obligatorio *");
+    campoObligatorioGenero.setVisible(false);
     textoGenero.setText(pelicula.getGenero()); // Genero de la pelicula anterior
     JLabel calificacionPelicula = new JLabel("Calificación de la película:");
     JTextField textoCalificacion = new JTextField(5); // Campo para la calificación
+    JLabel campoObligatorioCalificacion = new JLabel("Campo Obligatorio *");
+    campoObligatorioCalificacion.setVisible(false);
     String calificacionString = String.valueOf(pelicula.getCalificacion());
     textoCalificacion.setText(calificacionString);
     JButton aceptarEditarPelicula = new JButton("Aceptar");
@@ -318,16 +451,19 @@ public class Codigo_7 extends JFrame {
     formularioEditarPelicula.add(tituloPelicula);
     formularioEditarPelicula.add(Box.createVerticalStrut(15)); // Espaciado entre componentes
     formularioEditarPelicula.add(textoTitulo);
+    formularioEditarPelicula.add(campoObligatorioTitulo);
     formularioEditarPelicula.add(Box.createVerticalStrut(15));
     formularioEditarPelicula.add(generoPelicula);
     formularioEditarPelicula.add(Box.createVerticalStrut(15));
     formularioEditarPelicula.add(textoGenero);
+    formularioEditarPelicula.add(campoObligatorioGenero);
     formularioEditarPelicula.add(Box.createVerticalStrut(15));
     formularioEditarPelicula.add(calificacionPelicula);
     formularioEditarPelicula.add(Box.createVerticalStrut(15));
     formularioEditarPelicula.add(textoCalificacion);
+    formularioEditarPelicula.add(campoObligatorioCalificacion);
     formularioEditarPelicula.add(Box.createVerticalStrut(15));
-    
+
     // Crear panel para los botones del formulario
     JPanel botonesFormularioEditarPelicula = new JPanel();
     botonesFormularioEditarPelicula.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -338,22 +474,50 @@ public class Codigo_7 extends JFrame {
     aceptarEditarPelicula.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        // Obtenemos los nuevos valores de los campos de texto
-        String nuevoTituloPelicula = textoTitulo.getText();
-        String nuevoGeneroPelicula = textoGenero.getText();
-        String nuevoCalificacionPelicula = textoCalificacion.getText();
-        Integer nuevaCalificacionPeliculaNumero = Integer.valueOf(nuevoCalificacionPelicula);
-        
-        // Buscamos en la lista el mismo titulo y cambiamos los valores
-        for (Pelicula i: listaPeliculas) {
-          if (i.getTitulo().equals(pelicula.getTitulo())) {
-            i.setTitulo(nuevoTituloPelicula);
-            i.setGenero(nuevoGeneroPelicula);
-            i.setCalificacion(nuevaCalificacionPeliculaNumero);
-          }
+        // Variable para ver si los campos estan rellenados
+        boolean camposVacios = false;
+
+        // Comprobamos si los campos no estan vacios
+        if (textoTitulo.getText().trim().isEmpty()) {
+          campoObligatorioTitulo.setVisible(true);
+          camposVacios = true;
+        } else {
+          campoObligatorioTitulo.setVisible(false);
         }
-        actualizarPeliculasInventario(listaPeliculas);
-        formularioEditarPeliculas.dispose(); // Salimos de la ventana JDialog
+
+        if (textoGenero.getText().trim().isEmpty()) {
+          campoObligatorioGenero.setVisible(true);
+          camposVacios = true;
+        } else {
+          campoObligatorioGenero.setVisible(false);
+        }
+
+        if (textoCalificacion.getText().trim().isEmpty()) {
+          campoObligatorioCalificacion.setVisible(true);
+          camposVacios = true;
+        } else {
+          campoObligatorioCalificacion.setVisible(false);
+        }
+
+        // Si no hay campos vacios se ejecuta el añadir pelicula
+        if (camposVacios == false) {
+          // Obtenemos los nuevos valores de los campos de texto
+          String nuevoTituloPelicula = textoTitulo.getText();
+          String nuevoGeneroPelicula = textoGenero.getText();
+          String nuevoCalificacionPelicula = textoCalificacion.getText();
+          Integer nuevaCalificacionPeliculaNumero = Integer.valueOf(nuevoCalificacionPelicula);
+
+          // Buscamos en la lista el mismo titulo y cambiamos los valores
+          for (Pelicula i : listaPeliculas) {
+            if (i.getTitulo().equals(pelicula.getTitulo())) {
+              i.setTitulo(nuevoTituloPelicula);
+              i.setGenero(nuevoGeneroPelicula);
+              i.setCalificacion(nuevaCalificacionPeliculaNumero);
+            }
+          }
+          actualizarPeliculasInventario(listaPeliculas);
+          formularioEditarPeliculas.dispose(); // Salimos de la ventana JDialog
+        }
       }
     });
 
