@@ -43,6 +43,7 @@ public class Codigo_7 extends JFrame {
     JLabel mensajeConfirmacionPeliculasGuardadas = new JLabel("Las peliculas se han guardado exitosamente");
     // Boton aceptar
     JButton aceptarConfirmacionPeliculasGuardadas = new JButton("Aceptar");
+    aceptarConfirmacionPeliculasGuardadas.setBackground(Color.decode("#47a1ec"));
 
     // Evento para cerrar la ventana
     aceptarConfirmacionPeliculasGuardadas.addActionListener(new ActionListener() {
@@ -84,6 +85,8 @@ public class Codigo_7 extends JFrame {
     // Boton aceptar
     JButton aceptarConfirmacionPeliculasBorradas = new JButton("Aceptar");
     JButton cancelarConfirmacionPeliculasBorradas = new JButton("Cancelar");
+    aceptarConfirmacionPeliculasBorradas.setBackground(Color.decode("#e04545"));
+    cancelarConfirmacionPeliculasBorradas.setBackground(Color.decode("#d4d3d3"));
 
     // Eventos para aceptar o cancelar la eliminacion de la pelicula
     aceptarConfirmacionPeliculasBorradas.addActionListener(new ActionListener() {
@@ -144,6 +147,8 @@ public class Codigo_7 extends JFrame {
 
     // Componentes del header
     JLabel titulo = new JLabel("MyMovieList");
+    // Estilos al titulo de la aplicacion
+    titulo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
     titulo.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el título
     JButton añadirPelicula = new JButton("Añadir");
     JButton buscarPelicula = new JButton("Buscar");
@@ -156,6 +161,16 @@ public class Codigo_7 extends JFrame {
     volverAtras.setVisible(false);
     JPanel panelBotonVolverAtras = new JPanel();
     panelBotonVolverAtras.add(volverAtras);
+
+    // Estilos para los botones del header
+    añadirPelicula.setBackground(Color.decode("#47a1ec"));
+    añadirPelicula.setFont(new Font("Segoe Ui", Font.BOLD, 13));
+    buscarPelicula.setBackground(Color.decode("#47a1ec"));
+    buscarPelicula.setFont(new Font("Segoe Ui", Font.BOLD, 13));
+    guardarPeliculas.setBackground(Color.decode("#47a1ec"));
+    guardarPeliculas.setFont(new Font("Segoe Ui", Font.BOLD, 13));
+    volverAtras.setBackground(Color.decode("#e04545"));
+    volverAtras.setFont(new Font("Segoe Ui", Font.BOLD, 13));
 
     // Crear panel para el título (centrado)
     JPanel tituloHeader = new JPanel();
@@ -267,19 +282,28 @@ public class Codigo_7 extends JFrame {
     JLabel tituloPelicula = new JLabel("Título de la película:");
     JTextField textoTitulo = new JTextField(20); // Campo para el título
     JLabel campoObligatorioTitulo = new JLabel("Campo Obligatorio *");
+    campoObligatorioTitulo.setForeground(Color.decode("#e04545"));
     campoObligatorioTitulo.setVisible(false);
+
     JLabel generoPelicula = new JLabel("Género de la película:");
     JTextField textoGenero = new JTextField(20); // Campo para el género
     JLabel campoObligatorioGenero = new JLabel("Campo Obligatorio *");
     campoObligatorioGenero.setVisible(false);
+    campoObligatorioGenero.setForeground(Color.decode("#e04545"));
+
     JLabel calificacionPelicula = new JLabel("Calificación de la película:");
     JTextField textoCalificacion = new JTextField(5); // Campo para la calificación
     JLabel campoObligatorioCalificacion = new JLabel("Campo Obligatorio *");
     campoObligatorioCalificacion.setVisible(false);
+    campoObligatorioCalificacion.setForeground(Color.decode("#e04545"));
     JLabel errorCalificacionNumero = new JLabel("La calificación debe ser un número");
+    errorCalificacionNumero.setForeground(Color.decode("#e04545"));
     errorCalificacionNumero.setVisible(false);
+
     JButton aceptarAñadirPelicula = new JButton("Aceptar");
     JButton cancelarAñadirPelicula = new JButton("Cancelar");
+    aceptarAñadirPelicula.setBackground(Color.decode("#47a1ec"));
+    cancelarAñadirPelicula.setBackground(Color.decode("#d4d3d3"));
 
     // Crear panel para las etiquetas y los campos de texto
     JPanel formularioAñadirPelicula = new JPanel();
@@ -342,7 +366,6 @@ public class Codigo_7 extends JFrame {
         // Declaramos la variable para pasar la calificacion a texto
         Integer textoCalificacionNumero = null;
 
-
         // Comprobamos la validacion
         if (!textoCalificacion.getText().trim().isEmpty()) {
           try {
@@ -382,6 +405,8 @@ public class Codigo_7 extends JFrame {
   // Metodo para actualizar las películas del inventario
   public void actualizarPeliculasInventario(ArrayList<Pelicula> peliculas) {
     peliculasInventario.removeAll();
+    peliculasInventario.setOpaque(true);
+    peliculasInventario.setBackground(Color.decode("#f5f5f5"));
     for (Pelicula i : peliculas) {
       // Creamos el panel de cada película
       JPanel pelicula = new JPanel();
@@ -393,6 +418,12 @@ public class Codigo_7 extends JFrame {
       String textoCalificacionPelicula = String.valueOf(i.getCalificacion());
       JLabel calificacionPelicula = new JLabel(textoCalificacionPelicula);
 
+      // Estilos para las etiquetas
+      tituloPelicula.setFont(new Font("Segoe UI", Font.BOLD, 18));
+      generoPelicula.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+      calificacionPelicula.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+      calificacionPelicula.setForeground(Color.decode("#dfc209"));
+
       // Creamos panel de los campos de la pelicula
       JPanel valoresPelicula = new JPanel();
       valoresPelicula.setLayout(new BoxLayout(valoresPelicula, BoxLayout.Y_AXIS));
@@ -403,6 +434,8 @@ public class Codigo_7 extends JFrame {
       // Creamos los botones editar y borrar (PARA CADA PELICULA)
       JButton editarPelicula = new JButton("Editar");
       JButton borrarPelicula = new JButton("Borrar");
+      editarPelicula.setBackground(Color.decode("#9C27B0"));
+      borrarPelicula.setBackground(Color.decode("#e04545"));
       JPanel botonesPelicula = new JPanel();
       botonesPelicula.setLayout(new BoxLayout(botonesPelicula, BoxLayout.Y_AXIS));
       botonesPelicula.add(editarPelicula);
@@ -446,23 +479,32 @@ public class Codigo_7 extends JFrame {
     JLabel tituloPelicula = new JLabel("Título de la película:");
     JTextField textoTitulo = new JTextField(20); // Campo para el título
     JLabel campoObligatorioTitulo = new JLabel("Campo Obligatorio *");
+    campoObligatorioTitulo.setForeground(Color.decode("#e04545"));
     campoObligatorioTitulo.setVisible(false);
     textoTitulo.setText(pelicula.getTitulo()); // Titulo de la pelicula anterior
+
     JLabel generoPelicula = new JLabel("Género de la película:");
     JTextField textoGenero = new JTextField(20); // Campo para el género
     JLabel campoObligatorioGenero = new JLabel("Campo Obligatorio *");
+    campoObligatorioGenero.setForeground(Color.decode("#e04545"));
     campoObligatorioGenero.setVisible(false);
     textoGenero.setText(pelicula.getGenero()); // Genero de la pelicula anterior
+
     JLabel calificacionPelicula = new JLabel("Calificación de la película:");
     JTextField textoCalificacion = new JTextField(5); // Campo para la calificación
     JLabel campoObligatorioCalificacion = new JLabel("Campo Obligatorio *");
+    campoObligatorioCalificacion.setForeground(Color.decode("#e04545"));
     campoObligatorioCalificacion.setVisible(false);
     JLabel errorCalificacionNumero = new JLabel("La calificación debe ser un número");
+    errorCalificacionNumero.setForeground(Color.decode("#e04545"));
     errorCalificacionNumero.setVisible(false);
     String calificacionString = String.valueOf(pelicula.getCalificacion());
     textoCalificacion.setText(calificacionString);
+
     JButton aceptarEditarPelicula = new JButton("Aceptar");
     JButton cancelarEditarPelicula = new JButton("Cancelar");
+    aceptarEditarPelicula.setBackground(Color.decode("#47a1ec"));
+    cancelarEditarPelicula.setBackground(Color.decode("#d4d3d3"));
 
     // Crear panel para las etiquetas y los campos de texto
     JPanel formularioEditarPelicula = new JPanel();
