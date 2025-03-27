@@ -154,6 +154,7 @@ public class Codigo_7 extends JFrame {
     JButton buscarPelicula = new JButton("Buscar");
     JTextField textoBuscarPelicula = new JTextField(10);
     JButton guardarPeliculas = new JButton("Guardar");
+    JButton limpiarBusqueda = new JButton("Limpiar");
 
     // Creamos el boton volver para reiniciar el inventario
     JButton volverAtras = new JButton("Volver");
@@ -169,6 +170,8 @@ public class Codigo_7 extends JFrame {
     buscarPelicula.setFont(new Font("Segoe Ui", Font.BOLD, 13));
     guardarPeliculas.setBackground(Color.decode("#47a1ec"));
     guardarPeliculas.setFont(new Font("Segoe Ui", Font.BOLD, 13));
+    limpiarBusqueda.setBackground(Color.decode("#47a1ec"));
+    limpiarBusqueda.setFont(new Font("Segoe Ui", Font.BOLD, 13));
     volverAtras.setBackground(Color.decode("#e04545"));
     volverAtras.setFont(new Font("Segoe Ui", Font.BOLD, 13));
 
@@ -186,6 +189,7 @@ public class Codigo_7 extends JFrame {
     botonesHeader.add(guardarPeliculas);
     botonesHeader.add(buscarPelicula);
     botonesHeader.add(textoBuscarPelicula);
+    botonesHeader.add(limpiarBusqueda);
 
     // Crear el panel principal que contiene título y botones
     JPanel menuHeader = new JPanel();
@@ -249,6 +253,17 @@ public class Codigo_7 extends JFrame {
             volverAtras.setVisible(false);
           }
         });
+      }
+    });
+
+    // Evento para limpiar la busqueda del usuario
+    limpiarBusqueda.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        textoBuscarPelicula.setText(""); // Limpiamos el texto de busqueda
+        // Actualizamos el panel y ocultamos el boton
+        actualizarPeliculasInventario(listaPeliculas);
+        volverAtras.setVisible(false);
       }
     });
 
@@ -434,7 +449,7 @@ public class Codigo_7 extends JFrame {
       // Creamos los botones editar y borrar (PARA CADA PELICULA)
       JButton editarPelicula = new JButton("Editar");
       JButton borrarPelicula = new JButton("Borrar");
-      editarPelicula.setBackground(Color.decode("#9C27B0"));
+      editarPelicula.setBackground(Color.decode("#67ff9e"));
       borrarPelicula.setBackground(Color.decode("#e04545"));
       JPanel botonesPelicula = new JPanel();
       botonesPelicula.setLayout(new BoxLayout(botonesPelicula, BoxLayout.Y_AXIS));
